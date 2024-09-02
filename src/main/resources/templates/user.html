@@ -1,41 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>User</title>
+  <meta charset="UTF-8">
+  <title>All Users</title>
+  <h1>User!</h1>
 </head>
 <body>
-<table border="2">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Role</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${user}">
-        <td><p th:text="${user.getId()}"></p></td>
-        <td><p th:text="${user.getUsername()}"></p></td>
-        <td><p th:text="${user.getEmail()}"></p></td>
-        <td><p th:text="${user.roles}"></p></td>
-    </tr>
-    </tbody>
-</table>
-<br>
-<br>
-<div sec:authorize="hasRole('ROLE_ADMIN')">
-    <a th:href="@{/admin/update(id=${user.getId()})}">
-    <br/><br/>
-    <form th:method="POST" th:action="@{/admin/delete(id=${user.getId()})} ">
-        <input type="submit" value="Delete">
-    </form>
-</div>
-<br/><br/>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Выход">
-</form>
 
 </body>
 </html>

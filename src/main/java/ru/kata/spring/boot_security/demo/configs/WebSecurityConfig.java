@@ -23,6 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.detailServiceImpl = detailServiceImpl;
     }
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -32,6 +33,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().successHandler(successUserHandler)
+                .loginPage("/login")
+                .usernameParameter("email")
+                .passwordParameter("password")
                 .permitAll()
                 .and()
                 .logout()

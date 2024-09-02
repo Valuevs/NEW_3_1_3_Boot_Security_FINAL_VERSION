@@ -1,39 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>All Users</title>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <h1>User, welcome spring boot security page!</h1>
 </head>
 <body>
-<table border="2">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Role</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${users}">
-        <td><p th:text="${user.getId()}"></p></td>
-        <td><a th:href="@{/admin/user(id=${user.getId()})}" th:text="| ${user.getUsername()} |"></a></td>
-        <td><p th:text="${user.getEmail()}"></p></td>
-        <td><p th:text="${user.roles}"></p></td>
-    </tr>
-    </tbody>
-</table>
-<br/>
-<br/>
-
-<form th:action="@{/admin/new}">
-    <input type="submit" value="Add user">
-</form>
-
-<br/><br/><br/>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Выход">
-</form>
 
 </body>
 </html>

@@ -43,6 +43,28 @@ public class UserServiceImpl implements UserService {
         return userDao.findAll();
     }
 
+//    @Override
+//    @Transactional
+//    public void saveUser(User user) {
+//        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+//        user.setRoles(user.getRoles());
+//        userDao.save(user);
+//    }
+//
+//    @Override
+//    @Transactional
+//    public boolean updateUser(User user) {
+//        Optional<User> userFromDb = userDao.findById(user.getId());
+//        if (userFromDb.isPresent()) {
+//            userFromDb.get().setFirstName(user.getUsername());
+//        }
+//        userFromDb.get().setPassword(user.getPassword());
+//        userDao.save(userFromDb.get());
+//        return true;
+//    }\
+
+
+
     @Override
     @Transactional
     public void saveUser(User user) {
@@ -56,9 +78,12 @@ public class UserServiceImpl implements UserService {
     public boolean updateUser(User user) {
         Optional<User> userFromDb = userDao.findById(user.getId());
         if (userFromDb.isPresent()) {
-            userFromDb.get().setUsername(user.getUsername());
+            userFromDb.get().setFirstName(user.getFirstName());
+            userFromDb.get().setLastName(user.getLastName());
+            userFromDb.get().setEmail(user.getEmail());
+            userFromDb.get().setRoles(user.getRoles());
+            userFromDb.get().setPassword(new BCryptPasswordEncoder().encode(user.getPassword())); //  Зашифруйте пароль
         }
-        userFromDb.get().setPassword(user.getPassword());
         userDao.save(userFromDb.get());
         return true;
     }
@@ -73,9 +98,10 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+
     @Override
-    public User findByUsername(String username) {
-        return userDao.findByUsername(username);
+    public User findByEmail(String email) {
+        return userDao.findByEmail(email);
     }
 
 
