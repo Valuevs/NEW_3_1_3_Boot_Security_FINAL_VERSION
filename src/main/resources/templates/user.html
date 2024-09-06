@@ -1,11 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-  <meta charset="UTF-8">
-  <title>All Users</title>
-  <h1>User!</h1>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Information</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
+<header>
+    <nav class="navbar navbar-dark bg-dark p-0 shadow">
+        <div class="nav-item text-left text-white px-3">
+            <span class="fw-bold " th:text="${user.username}"></span>
+            <span>with roles:</span>
+            <span th:each="role : ${user.authorities}"
+                  th:text="${#strings.substring(role.getAuthority(), 5)} + ' '">
+            </span>
+        </div>
+        <ul class="navbar-nav mr-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link px-3" href="/logout">Logout</a>
+            </li>
+        </ul>
+    </nav>
+</header>
 
-</body>
+<div class="container-fluid mt-3 ">
+
+    <div class="row">
+        <div class="col-md-2 px-0 ">
+            <div class="d-flex flex-column flex-shrink-0 p-0 text-white">
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a href="#userInfo" data-bs-toggle="pill" class="nav-link active no-refresh" role="tab"
+                           aria-current="false">
+                            User
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-10 bg-light">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="userInfo" role="tabpanel">
+                    <div class="container-fluid">
+                        <h2>User information-page</h2>
+                        <div class="card">
+                            <div class="container-fluid px-0 bg-light border">
+                                <h5 class="card-header">
+                                    About user</h5>
+                            </div>
+
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Age</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="user : ${user}">
+                                    <td><p th:text="${user.getId()}"></p></td>
+                                    <td><p th:text="${user.firstName}"></p></td>
+                                    <td><p th:text="${user.lastName}"></p></td>
+                                    <td><p th:text="${user.age}"></p></td>
+                                    <td><p th:text="${user.email}"></p></td>
+                                    <td>
+                                    <span th:each="role : ${user.authorities}"
+                                          th:text="${#strings.substring(role.getAuthority(), 5)} + ' '">
+                                    </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            <br>
+                            <div sec:authorize="hasRole('ROLE_ADMIN')">
+                                <a th:href="@{/admin/update(id=${user.getId()})}">
+
+                                </a>
+                            </div>
+                            </body>
 </html>

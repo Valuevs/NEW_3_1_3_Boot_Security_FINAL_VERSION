@@ -43,28 +43,6 @@ public class UserServiceImpl implements UserService {
         return userDao.findAll();
     }
 
-//    @Override
-//    @Transactional
-//    public void saveUser(User user) {
-//        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-//        user.setRoles(user.getRoles());
-//        userDao.save(user);
-//    }
-//
-//    @Override
-//    @Transactional
-//    public boolean updateUser(User user) {
-//        Optional<User> userFromDb = userDao.findById(user.getId());
-//        if (userFromDb.isPresent()) {
-//            userFromDb.get().setFirstName(user.getUsername());
-//        }
-//        userFromDb.get().setPassword(user.getPassword());
-//        userDao.save(userFromDb.get());
-//        return true;
-//    }\
-
-
-
     @Override
     @Transactional
     public void saveUser(User user) {
@@ -73,20 +51,45 @@ public class UserServiceImpl implements UserService {
         userDao.save(user);
     }
 
+
     @Override
     @Transactional
-    public boolean updateUser(User user) {
-        Optional<User> userFromDb = userDao.findById(user.getId());
+    public boolean updateUser(Long id, User updatedUser) {
+        Optional<User> userFromDb = userDao.findById(id);
         if (userFromDb.isPresent()) {
-            userFromDb.get().setFirstName(user.getFirstName());
-            userFromDb.get().setLastName(user.getLastName());
-            userFromDb.get().setEmail(user.getEmail());
-            userFromDb.get().setRoles(user.getRoles());
-            userFromDb.get().setPassword(new BCryptPasswordEncoder().encode(user.getPassword())); //  Зашифруйте пароль
+            User existingUser = userFromDb.get();
+
+            // Обновляем остальные поля пользователя
+            existingUser.setFirstName(updatedUser.getFirstName());
+            existingUser.setLastName(updatedUser.getLastName());
+            existingUser.setEmail(updatedUser.getEmail());
+            existingUser.setAge(updatedUser.getAge());
+
+            // Если пароль был изменен, хешируем и сохраняем новый
+            if (!updatedUser.getPassword().equals(existingUser.getPassword())) {
+                existingUser.setPassword(new BCryptPasswordEncoder().encode(updatedUser.getPassword()));
+            }
+
+            // Обновляем роли пользователя
+            existingUser.setRoles(updatedUser.getRoles());
+
+            userDao.save(existingUser);
+            return true;
         }
-        userDao.save(userFromDb.get());
-        return true;
+        return false;
     }
+//    @Override
+//    @Transactional
+//    public boolean updateUser(Long id, User user) {
+//        Optional<User> userFromDb = userDao.findById(user.getId());
+//        if (userFromDb.isPresent()) {
+//            userFromDb.get().setFirstName(user.getUsername());
+//        }
+//        userFromDb.get().setPassword(user.getPassword());
+//        userDao.save(userFromDb.get());
+//        return true;
+//    }
+
 
     @Override
     @Transactional
@@ -103,6 +106,5 @@ public class UserServiceImpl implements UserService {
     public User findByEmail(String email) {
         return userDao.findByEmail(email);
     }
-
-
 }
+
