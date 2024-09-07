@@ -78,17 +78,6 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
-//    @Override
-//    @Transactional
-//    public boolean updateUser(Long id, User user) {
-//        Optional<User> userFromDb = userDao.findById(user.getId());
-//        if (userFromDb.isPresent()) {
-//            userFromDb.get().setFirstName(user.getUsername());
-//        }
-//        userFromDb.get().setPassword(user.getPassword());
-//        userDao.save(userFromDb.get());
-//        return true;
-//    }
 
 
     @Override

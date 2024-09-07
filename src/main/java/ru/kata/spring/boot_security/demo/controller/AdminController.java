@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.kata.spring.boot_security.demo.dao.RoleDao;
 
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -25,14 +27,19 @@ public class AdminController {
         this.roleDao = roleDao;
     }
 
-    // Страница со всеми пользователями
+
     @GetMapping
     public String allUserTable(Model model, Principal principal) {
         model.addAttribute("users", userService.findAllUsers());
+        model.addAttribute("roles", roleDao.findAll());
         model.addAttribute("currentUserEmail", principal.getName());
         model.addAttribute("currentUserRoles", userService.findByEmail(principal.getName()).getAuthorities());
+        // Добавить в модель объект user
+        User currentUser = userService.findByEmail(principal.getName());
+        model.addAttribute("user", currentUser); // Добавьте объект user в модель
         return "users";
     }
+
 
     // Открытие страницы одного пользователя
     @GetMapping("/user")
@@ -41,15 +48,15 @@ public class AdminController {
         return "user";
     }
 
-    // Форма для добавления нового пользователя
     @GetMapping("/new")
-    public String createUserForm(Model model) {
-        model.addAttribute("user", new User());
-        model.addAttribute("roles", roleDao.findAll());
+    public String createUserForm(@ModelAttribute("user") User user) {
+        List<Role> roles = roleDao.findAll();
+        user.setRoles(roles);
         return "users";
     }
 
-    // Добавление нового пользователя
+
+    // Добавление нового пользователя из старой формы
     @PostMapping("/new")
     public String addUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);

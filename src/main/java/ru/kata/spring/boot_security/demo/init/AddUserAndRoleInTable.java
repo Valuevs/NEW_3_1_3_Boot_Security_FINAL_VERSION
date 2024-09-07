@@ -33,7 +33,7 @@ public class AddUserAndRoleInTable {
         roleDao.save(new Role(2L, "ROLE_USER"));
         List<Role> adminRole = roleDao.findById(1L).stream().toList();
         List<Role> userRole = roleDao.findById(2L).stream().toList();
-        userService.saveUser(new User("Valuev","Semyon", 24, "minipig@mail.ru","minipig", adminRole));
-        userService.saveUser(new User("Valuev","Pavel", 34, "pavel@gmail.com","pavel", userRole));
+        userService.saveUser(new User("Valuev", "Semyon", 24, "minipig@mail.ru", "minipig", adminRole));
+        userService.saveUser(new User("Valuev", "Pavel", 34, "pavel@gmail.com", "pavel", userRole));
     }
 }
